@@ -11,14 +11,30 @@ django-modeladmin-reorder
 .. image:: https://coveralls.io/repos/mishbahr/django-modeladmin-reorder/badge.png?branch=master
     :target: https://coveralls.io/r/mishbahr/django-modeladmin-reorder?branch=master
 
-Custom ordering for the apps and models in the admin app.
+Custom ordering for the apps and models in the admin app. You can also rename, cross link or exclude models from the app list.
 
-You can rename, reorder, cross link, exclude apps or models
+
+Features
+--------
+
+* Reorder apps in admin index — this will allow you to position most used apps in top of the page, instead of listing apps alphabetically. e.g. ``sites`` app before the ``auth`` app
+
+* Rename a app label easily for third party apps without having to modify the source code. e.g. rename ``auth`` app to ``Authorisation``
+
+* Reorder models within a app. e.g. ``auth.User`` model before the ``auth.Group``
+
+* Exclude any of the models from the app list by not including it in the ``models`` config. e.g. Exclude ``auth.Group`` from app list. Please note this only excludes the model from the app list and it doesn't protect it from access via url.
+
+* Cross link models from multiple apps to make your own app module. e.g. Group ``sites.Site`` with the ``auth`` app
+
+* Rename individual model in the app list. e.g. rename ``auth.User`` name from ``User`` to ``Staff``
+
 
 Documentation
 -------------
 
 The full documentation is at https://django-modeladmin-reorder.readthedocs.org.
+
 
 Install
 ----------
@@ -75,20 +91,4 @@ Configuration
             {'model': 'auth.User', 'label': 'Staff'},
         )},
     )
-
-
-Features
---------
-
-* Reorder apps in admin index — this will allow you to position most used apps in top of the page, instead of listing apps alphabetically. e.g. ``sites`` app before the ``auth`` app
-
-* Rename a app label easily for third party apps without having to modify the source code. e.g. rename ``auth`` app to ``Authorisation``
-
-* Reorder models within a ``app``. e.g. ``auth.User`` model before the ``auth.Group``
-
-* Exclude any of the models from the app list by not including it in the ``models`` config. e.g. Exclude ``auth.Group`` from app list. Please note this only excludes the model from the app list and it doesn't protect it from access via url.
-
-* Cross link models from multiple apps to make your own app module. e.g. Group ``sites.Site`` with the ``auth`` app
-
-* Rename individual model in the app list. e.g. rename ``auth.User`` name from ``User`` to ``Staff``
 
