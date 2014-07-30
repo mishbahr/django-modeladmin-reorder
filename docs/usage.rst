@@ -39,7 +39,8 @@ Usage
 
         # models with custom name
         {'app': 'auth', 'models': (
-            'auth.User',
-            {'model': 'auth.Group', 'label': 'User Group'},
+            'auth.Group',
+            {'model': 'auth.User', 'label': 'Staff'},
         )},
     )
+
