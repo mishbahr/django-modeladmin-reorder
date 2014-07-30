@@ -44,7 +44,7 @@ Configuration
 
     MIDDLEWARE_CLASSES = (
         ...
-        'admin_reorder.middleware.AdminReorder',
+        'admin_reorder.middleware.ModelAdminReorder',
         ...
     )
 
