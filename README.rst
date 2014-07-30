@@ -80,21 +80,15 @@ Configuration
 Features
 --------
 
-* Reorder apps in admin index — this will allow you to position
-most used apps in top of the page, instead of listing apps
-alphabetically. e.g. `sites` app before the `auth` app
+* Reorder apps in admin index — this will allow you to position most used apps in top of the page, instead of listing apps alphabetically. e.g. `sites` app before the `auth` app
 
-* Rename a `app` label easily for third party apps without having
-to modify the source code. e.g. rename `auth` app to `Authorisation`
+* Rename a `app` label easily for third party apps without having to modify the source code. e.g. rename `auth` app to `Authorisation`
 
 * Reorder models within a `app`. e.g. `auth.User` model before the `auth.Group`
 
-* Exclude any of the models from the app list by not including it
-in the `models` config. e.g. Exclude `auth.Group` from app list.
-
-Please note this only excludes the model from the app list and it doesn't protect it from access via url
+* Exclude any of the models from the app list by not including it in the `models` config. e.g. Exclude `auth.Group` from app list. Please note this only excludes the model from the app list and it doesn't protect it from access via url.
 
 * Cross link models from multiple apps to make your own app module. e.g. Group 'sites.Site' with the 'auth' app
 
-* Rename individual models in app list. e.g. rename `auth.User` name from 'User' to 'Staff'
+* Rename individual model in the app list. e.g. rename `auth.User` name from 'User' to 'Staff'
 
