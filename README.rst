@@ -22,6 +22,7 @@ django-modeladmin-reorder
   :target: https://coveralls.io/r/mishbahr/django-modeladmin-reorder?branch=master
 
 
+
 Custom ordering for the apps and models in the admin app. You can also rename, cross link or exclude models from the app list.
 
 
@@ -56,7 +57,7 @@ Install django-modeladmin-reorder::
 
 
 Configuration
-----------
+-------------
 
 1. Add `admin_reorder` to `INSTALLED_APPS`::
 
@@ -78,7 +79,6 @@ Configuration
 
 
 3. Add the setting `ADMIN_REORDER` to your settings.py::
-
 
     ADMIN_REORDER = (
         # Keep original label and models
@@ -102,4 +102,3 @@ Configuration
             {'model': 'auth.User', 'label': 'Staff'},
         )},
     )
-
