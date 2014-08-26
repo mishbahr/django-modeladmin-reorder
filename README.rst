@@ -2,14 +2,24 @@
 django-modeladmin-reorder
 =============================
 
-.. image:: https://badge.fury.io/py/django-modeladmin-reorder.png
-    :target: https://badge.fury.io/py/django-modeladmin-reorder
+.. image:: http://img.shields.io/travis/mishbahr/django-modeladmin-reorder.svg?style=flat-square
+    :target: https://travis-ci.org/mishbahr/django-modeladmin-reorder/
 
-.. image:: https://travis-ci.org/mishbahr/django-modeladmin-reorder.png?branch=master
-    :target: https://travis-ci.org/mishbahr/django-modeladmin-reorder
+.. image:: http://img.shields.io/pypi/v/django-modeladmin-reorder.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/django-modeladmin-reorder/
+    :alt: Latest Version
 
-.. image:: https://coveralls.io/repos/mishbahr/django-modeladmin-reorder/badge.png?branch=master
-    :target: https://coveralls.io/r/mishbahr/django-modeladmin-reorder?branch=master
+.. image:: http://img.shields.io/pypi/dm/django-modeladmin-reorder.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/django-modeladmin-reorder/
+    :alt: Downloads
+
+.. image:: http://img.shields.io/pypi/l/django-modeladmin-reorder.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/django-modeladmin-reorder/
+    :alt: License
+
+.. image:: http://img.shields.io/coveralls/mishbahr/django-modeladmin-reorder.svg?style=flat-square
+  :target: https://coveralls.io/r/mishbahr/django-modeladmin-reorder?branch=master
+
 
 Custom ordering for the apps and models in the admin app. You can also rename, cross link or exclude models from the app list.
 
