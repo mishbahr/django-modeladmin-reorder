@@ -2,6 +2,7 @@
 django-modeladmin-reorder
 =============================
 
+
 .. image:: http://img.shields.io/travis/mishbahr/django-modeladmin-reorder.svg?style=flat-square
     :target: https://travis-ci.org/mishbahr/django-modeladmin-reorder/
 
