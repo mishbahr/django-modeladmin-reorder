@@ -43,3 +43,6 @@ docs/_build
 
 # Cookiecutter
 output/
+
+#PyCharm
+.idea/
