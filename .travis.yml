@@ -3,18 +3,49 @@
 language: python
 
 python:
+  - "3.5"
+  - "3.4"
   - "3.3"
   - "2.7"
+  - "2.6"
+
 env:
     - DJANGO="Django==1.5"
     - DJANGO="Django==1.6"
     - DJANGO="Django==1.7"
     - DJANGO="Django==1.8"
+    - DJANGO="Django==1.9"
+
+matrix:
+    exclude:
+        # Django 1.5 support Python 2.6.5 Python 2.7, Python 3.2 and 3.3.
+        # Django 1.6 requires Python (2.6.X, 2.7.X, 3.2.X, and 3.3.X)
+        # Django 1.7 requires Python 2.7, 3.2, 3.3, or 3.4
+        # Django 1.8 requiert Python 2.7, 3.2, 3.3, 3.4 or 3.5.
+        # Django 1.9 requiert Python 2.7, 3.4 or 3.5.
+        # Python 2.6 support has been dropped for Django 1.7 onwards
+        - python: "3.4"
+          env: DJANGO="Django==1.5"
+        - python: "3.5"
+          env: DJANGO="Django==1.5"
+        - python: "3.4"
+          env: DJANGO="Django==1.6"
+        - python: "3.5"
+          env: DJANGO="Django==1.6"
+        - python: "2.6"
+          env: DJANGO="Django==1.7"
+        - python: "3.5"
+          env: DJANGO="Django==1.7"
+        - python: "2.6"
+          env: DJANGO="Django==1.8"
+        - python: "2.6"
+          env: DJANGO="Django==1.9"
+        - python: "3.3"
+          env: DJANGO="Django==1.9"
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
  - pip install $DJANGO --use-mirrors
- - pip install wheel==0.24.0 --use-mirrors
  - pip install -r requirements-test.txt --use-mirrors
 
 # command to run tests using coverage, e.g. python setup.py test
