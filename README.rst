@@ -29,7 +29,7 @@ Custom ordering for the apps and models in the admin app. You can also rename, c
 Features
 --------
 
-* Reorder apps in admin index — this will allow you to position most used apps in top of the page, instead of listing apps alphabetically. e.g. ``sites`` app before the ``auth`` app
+* Reorder apps in admin index - this will allow you to position most used apps in top of the page, instead of listing apps alphabetically. e.g. ``sites`` app before the ``auth`` app
 
 * Rename app labels easily for third party apps without having to modify the source code. e.g. rename ``auth`` app to ``Authorisation`` for the django admin app.
 
