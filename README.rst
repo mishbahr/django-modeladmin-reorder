@@ -18,10 +18,6 @@ django-modeladmin-reorder
     :target: https://pypi.python.org/pypi/django-modeladmin-reorder/
     :alt: License
 
-.. image:: http://img.shields.io/coveralls/mishbahr/django-modeladmin-reorder.svg?style=flat-square
-  :target: https://coveralls.io/r/mishbahr/django-modeladmin-reorder?branch=master
-
-
 
 Custom ordering for the apps and models in the admin app. You can also rename, cross link or exclude models from the app list.
 
