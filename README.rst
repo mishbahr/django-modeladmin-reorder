@@ -29,6 +29,8 @@ Features
 
 * Rename app labels easily for third party apps without having to modify the source code. e.g. rename ``auth`` app to ``Authorisation`` for the django admin app.
 
+* Split large apps into smaller groups of models.
+
 * Reorder models within an app. e.g. ``auth.User`` model before the ``auth.Group`` model.
 
 * Exclude any of the models from the app list. e.g. Exclude ``auth.Group`` from the app list. Please note this only excludes the model from the app list and it doesn't protect it from access via url.
