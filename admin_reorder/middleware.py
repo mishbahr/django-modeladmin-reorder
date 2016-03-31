@@ -2,6 +2,7 @@ from copy import deepcopy
 
 from django.conf import settings
 from django.contrib import admin
+from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import resolve
 
 
@@ -11,30 +12,30 @@ class ModelAdminReorder(object):
         self.request = request
         self.app_list = app_list
 
-        self.config = getattr(settings, 'ADMIN_REORDER')
+        self.config = getattr(settings, 'ADMIN_REORDER', None)
         if not self.config:
             # ADMIN_REORDER settings is not defined.
-            raise NameError('ADMIN_REORDER config is not defined.')
+            raise ImproperlyConfigured('ADMIN_REORDER config is not defined.')
 
         if not isinstance(self.config, (tuple, list)):
-            raise TypeError('ADMIN_REORDER config parameter must be '
-                            'tuple or list. Got %s' % repr(self.config))
+            raise ImproperlyConfigured(
+                'ADMIN_REORDER config parameter must be tuple or list. '
+                'Got {config}'.format(config=self.config))
 
         admin_index = admin.site.index(request)
         try:
             # try to get all installed models
-            _app_list = admin_index.context_data['app_list']
-        except Exception:
+            app_list = admin_index.context_data['app_list']
+        except KeyError:
             # use app_list from context if this fails
-            _app_list = app_list
+            pass
 
         # Flatten all models from apps
         self.models_list = []
-        for app in _app_list:
+        for app in app_list:
             for model in app['models']:
-                model['model_name'] = \
-                    self.get_model_name(app['app_label'],
-                                        model['object_name'])
+                model['model_name'] = self.get_model_name(
+                    app['app_label'], model['object_name'])
                 self.models_list.append(model)
 
     def get_app_list(self):
@@ -130,7 +131,7 @@ class ModelAdminReorder(object):
 
         try:
             app_list = response.context_data['app_list']
-        except Exception:
+        except KeyError:
             # there is no app_list! nothing to reorder
             return response
 
