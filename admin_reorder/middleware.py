@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from django.conf import settings
 from django.contrib import admin
 from django.core.urlresolvers import resolve
@@ -71,6 +73,7 @@ class ModelAdminReorder(object):
 
         app = self.find_app(app_config['app'])
         if app:
+            app = deepcopy(app)
             # Rename app
             if 'label' in app_config:
                 app['name'] = app_config['label']
