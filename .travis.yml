@@ -20,8 +20,8 @@ env:
 matrix:
     exclude:
         # Django 1.5 support Python 2.6.5 Python 2.7, Python 3.2 and 3.3.
-        # Django 1.6 requires Python (2.6.X, 2.7.X, 3.2.X, and 3.3.X)
-        # Django 1.7 requires Python 2.7, 3.2, 3.3, or 3.4
+        # Django 1.6 requires Python 2.6, 2.7, 3.2, or 3.3.
+        # Django 1.7 requires Python 2.7, 3.2, 3.3, or 3.4.
         # Django 1.8 requires Python 2.7, 3.2, 3.3, 3.4 or 3.5.
         # Django 1.9 requires Python 2.7, 3.4 or 3.5.
         # Django 1.10 requires Python 2.7, 3.4 or 3.5.
