@@ -3,10 +3,17 @@ from copy import deepcopy
 from django.conf import settings
 from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
-from django.core.urlresolvers import resolve
+from django.core.urlresolvers import resolve, Resolver404
+
+try:
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:
+    # Not required for Django <= 1.9, see:
+    # https://docs.djangoproject.com/en/1.10/topics/http/middleware/#upgrading-pre-django-1-10-style-middleware
+    MiddlewareMixin = object
 
 
-class ModelAdminReorder(object):
+class ModelAdminReorder(MiddlewareMixin):
 
     def init_config(self, request, app_list):
         self.request = request
@@ -122,7 +129,10 @@ class ModelAdminReorder(object):
             return model
 
     def process_template_response(self, request, response):
-        url = resolve(request.path)
+        try:
+            url = resolve(request.path_info)
+        except Resolver404:
+            return response
         if not url.app_name == 'admin' and \
                 url.url_name not in ['index', 'app_list']:
             # current view is not a django admin index
