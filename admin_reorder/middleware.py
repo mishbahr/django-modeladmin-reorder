@@ -5,8 +5,15 @@ from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import resolve, Resolver404
 
+try:
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:
+    # Not required for Django <= 1.9, see:
+    # https://docs.djangoproject.com/en/1.10/topics/http/middleware/#upgrading-pre-django-1-10-style-middleware
+    MiddlewareMixin = object
 
-class ModelAdminReorder(object):
+
+class ModelAdminReorder(MiddlewareMixin):
 
     def init_config(self, request, app_list):
         self.request = request
