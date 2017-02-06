@@ -110,6 +110,10 @@ class ModelAdminReorder(MiddlewareMixin):
 
             if model:
                 ordered_models_list.append(model)
+            else:
+                raise NameError('"models" config for ADMIN_REORDER list '
+                                'item specified unknown model "%s"' %
+                                repr(model_config))
 
         return ordered_models_list
 
