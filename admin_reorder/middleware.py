@@ -143,18 +143,23 @@ class ModelAdminReorder(MiddlewareMixin):
             return model
 
     def process_instance(self, model_config):
-        for key in ('instance', 'lookup', ):
-            if key not in model_config:
+        if isinstance(model_config['instance'], six.string_types):
+            if 'lookup' not in model_config:
                 return
 
-        model = apps.get_model(model_config['instance'])
-        if model is None:
-            return
-        meta = model._meta
+            model = apps.get_model(model_config['instance'])
+            if model is None:
+                return
+            meta = model._meta
 
-        obj = model.objects.filter(**model_config['lookup']).first()
-        if obj is None:
-            return
+            obj = model.objects.filter(**model_config['lookup']).first()
+            if obj is None:
+                return
+
+        else:
+            obj = model_config['instance']
+            model = type(obj)
+            meta = model._meta
 
         urlpattern = model_config.get('urlpattern')
         if not urlpattern:
