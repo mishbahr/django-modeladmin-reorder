@@ -1,9 +1,12 @@
+import six
 from copy import deepcopy
 
+from django.apps import apps
 from django.conf import settings
 from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
-from django.core.urlresolvers import resolve, Resolver404
+from django.core.urlresolvers import resolve, Resolver404, reverse
+from django.utils.module_loading import import_string
 
 try:
     from django.utils.deprecation import MiddlewareMixin
@@ -23,6 +26,14 @@ class ModelAdminReorder(MiddlewareMixin):
         if not self.config:
             # ADMIN_REORDER settings is not defined.
             raise ImproperlyConfigured('ADMIN_REORDER config is not defined.')
+
+        if isinstance(self.config, six.string_types):
+            try:
+                f = import_string(self.config)
+            except ImportError as e:
+                raise ImproperlyConfigured(
+                    "ADMIN_REORDER function not found: %s" % e)
+            self.config = f(request)
 
         if not isinstance(self.config, (tuple, list)):
             raise ImproperlyConfigured(
@@ -120,6 +131,9 @@ class ModelAdminReorder(MiddlewareMixin):
 
     def process_model(self, model_config):
         # Process model defined as { model: 'model', 'label': 'label' }
+        if 'instance' in model_config:
+            return self.process_instance(model_config)
+
         for key in ('model', 'label', ):
             if key not in model_config:
                 return
@@ -127,6 +141,36 @@ class ModelAdminReorder(MiddlewareMixin):
         if model:
             model['name'] = model_config['label']
             return model
+
+    def process_instance(self, model_config):
+        if isinstance(model_config['instance'], six.string_types):
+            if 'lookup' not in model_config:
+                return
+
+            model = apps.get_model(model_config['instance'])
+            if model is None:
+                return
+            meta = model._meta
+
+            obj = model.objects.filter(**model_config['lookup']).first()
+            if obj is None:
+                return
+
+        else:
+            obj = model_config['instance']
+            model = type(obj)
+            meta = model._meta
+
+        urlpattern = model_config.get('urlpattern')
+        if not urlpattern:
+            urlpattern = 'admin:%s_%s_change' % (meta.app_label, meta.model_name)
+
+        return {
+            'admin_url': reverse(urlpattern, args=(obj.pk,)),
+            'name': model_config.get('label') or unicode(obj),
+            'object_name': model.__name__,
+            'perms': {'add': False, 'change': False, 'delete': False}
+        }
 
     def process_template_response(self, request, response):
         try:
