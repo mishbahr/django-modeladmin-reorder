@@ -1,3 +1,4 @@
+import six
 from copy import deepcopy
 
 from django.apps import apps
@@ -5,6 +6,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import resolve, Resolver404, reverse
+from django.utils.module_loading import import_string
 
 try:
     from django.utils.deprecation import MiddlewareMixin
@@ -24,6 +26,14 @@ class ModelAdminReorder(MiddlewareMixin):
         if not self.config:
             # ADMIN_REORDER settings is not defined.
             raise ImproperlyConfigured('ADMIN_REORDER config is not defined.')
+
+        if isinstance(self.config, six.string_types):
+            try:
+                f = import_string(self.config)
+            except ImportError as e:
+                raise ImproperlyConfigured(
+                    "ADMIN_REORDER function not found: %s" % e)
+            self.config = f(request)
 
         if not isinstance(self.config, (tuple, list)):
             raise ImproperlyConfigured(
