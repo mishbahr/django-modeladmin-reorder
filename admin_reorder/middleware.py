@@ -30,13 +30,14 @@ class ModelAdminReorder(MiddlewareMixin):
                 'ADMIN_REORDER config parameter must be tuple or list. '
                 'Got {config}'.format(config=self.config))
 
-        admin_index = admin.site.index(request)
-        try:
-            # try to get all installed models
-            app_list = admin_index.context_data['app_list']
-        except KeyError:
-            # use app_list from context if this fails
-            pass
+        if not getattr(settings, 'ADMIN_REORDER_MULTIPLE_ADMIN_SITES', None):
+            admin_index = admin.site.index(request)
+            try:
+                # try to get all installed models
+                app_list = admin_index.context_data['app_list']
+            except KeyError:
+                # use app_list from context if this fails
+                pass
 
         # Flatten all models from apps
         self.models_list = []
@@ -91,12 +92,13 @@ class ModelAdminReorder(MiddlewareMixin):
             if 'models' in app_config:
                 models_config = app_config.get('models')
                 models = self.process_models(models_config)
-                if models:
-                    app['models'] = models
-            return app
+                app['models'] = models
+
+            if app['models']:
+                return app
 
     def process_models(self, models_config):
-        if not isinstance(models_config, (dict, list, tuple)):
+        if not isinstance(models_config, (Mapping, list, tuple)):
             raise TypeError('"models" config for ADMIN_REORDER list '
                             'item must be dict or list/tuple. '
                             'Got %s' % repr(models_config))
@@ -104,7 +106,7 @@ class ModelAdminReorder(MiddlewareMixin):
         ordered_models_list = []
         for model_config in models_config:
             model = None
-            if isinstance(model_config, dict):
+            if isinstance(model_config, Mapping):
                 model = self.process_model(model_config)
             else:
                 model = self.find_model(model_config)
