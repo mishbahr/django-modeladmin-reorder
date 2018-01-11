@@ -10,7 +10,7 @@ django_version = django.get_version()
 if django_version >= '2.0':
     from django.urls import resolve, Resolver404
 else:
-    from django.core.urlresolvers import resolve, Resolver 404
+    from django.core.urlresolvers import resolve, Resolver404
 
 try:
     from django.utils.deprecation import MiddlewareMixin
