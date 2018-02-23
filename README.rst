@@ -49,7 +49,9 @@ The full documentation is at https://django-modeladmin-reorder.readthedocs.org.
 Install
 ----------
 
-Install django-modeladmin-reorder::
+Install django-modeladmin-reorder:
+
+.. code-block:: bash
 
     pip install django-modeladmin-reorder
 
@@ -57,7 +59,9 @@ Install django-modeladmin-reorder::
 Configuration
 -------------
 
-1. Add `admin_reorder` to `INSTALLED_APPS`::
+1. Add `admin_reorder` to `INSTALLED_APPS`:
+
+   .. code-block:: python
 
     INSTALLED_APPS = (
         ...
@@ -66,8 +70,9 @@ Configuration
     )
 
 
-2. Add the `ModelAdminReorder` to `MIDDLEWARE_CLASSES`::
+2. Add the `ModelAdminReorder` to `MIDDLEWARE_CLASSES`:
 
+   .. code-block:: python
 
     MIDDLEWARE_CLASSES = (
         ...
@@ -76,7 +81,9 @@ Configuration
     )
 
 
-3. Add the setting `ADMIN_REORDER` to your settings.py::
+3. Add the setting `ADMIN_REORDER` to your settings.py:
+
+   .. code-block:: python
 
     ADMIN_REORDER = (
         # Keep original label and models
