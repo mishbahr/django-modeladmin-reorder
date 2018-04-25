@@ -95,8 +95,9 @@ class ModelAdminReorder(MiddlewareMixin):
             if 'models' in app_config:
                 models_config = app_config.get('models')
                 models = self.process_models(models_config)
-                if models:
-                    app['models'] = models
+                if not models:
+                    return None
+                app['models'] = models
             return app
 
     def process_models(self, models_config):
