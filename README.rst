@@ -106,4 +106,14 @@ Configuration
             'auth.Group',
             {'model': 'auth.User', 'label': 'Staff'},
         )},
+        
+        # Split models of large app into smaller groups
+        {'app': 'myapp', 'label': 'Extinct',
+        'models': ('myapp.Dinosaur',
+                   'myapp.Mammoth',)
+        },
+        {'app': 'myapp', 'label': 'Extant',
+        'models': ('myapp.Humans',
+                   'myapp.Elephant',)
+        },
     )
