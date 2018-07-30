@@ -4,19 +4,9 @@ language: python
 
 python:
   - "3.5"
-  - "3.4"
-  - "2.7"
 env:
-    - DJANGO="Django==1.8.4"
-    - DJANGO="Django==1.9.9"
     - DJANGO="Django==1.10"
     - DJANGO="Django==2.0.7"
-
-matrix:
-  exclude:
-    # Django >= 2.0 drops support for Python 2, so don't build against it.
-    - python: "2.7"
-      env: DJANGO="Django==2.0.7"
 
 # command to install dependencies, e.g. pip install -r requirements.txt
 install:
