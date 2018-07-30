@@ -24,7 +24,7 @@ install:
  - pip install -r requirements-test.txt
 
 # command to run tests using coverage, e.g. python setup.py test
-script: coverage run --source admin_reorder runtests.py
+script: python -m pytest --cov=admin_reorder
 
 # report coverage to coveralls.io
 after_success: coveralls

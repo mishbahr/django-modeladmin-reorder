@@ -10,3 +10,4 @@ tox>=1.7.0
 
 pytest==3.6.3
 pytest-django==3.3.2
+pytest-cov==2.5.1
