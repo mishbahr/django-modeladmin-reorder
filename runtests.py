@@ -14,6 +14,7 @@ try:
         ROOT_URLCONF="admin_reorder.urls",
         INSTALLED_APPS=[
             "django.contrib.auth",
+            "django.contrib.admin",
             "django.contrib.contenttypes",
             "django.contrib.sites",
             "admin_reorder",
@@ -32,7 +33,8 @@ try:
 
     from django_nose import NoseTestSuiteRunner
 except ImportError:
-    raise ImportError("To fix this error, run: pip install -r requirements-test.txt")
+    raise ImportError(
+        "To fix this error, run: pip install -r requirements-test.txt")
 
 
 def run_tests(*test_args):
