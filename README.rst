@@ -108,10 +108,11 @@ Configuration
         )},
     )
 
-4. If you override the default admin site object (django.contrib.admin.site).
+4. If you override the default admin site object (django.contrib.admin.site),
    add the setting `ADMIN_REORDER_SITE` to your settings.py:
 
    .. code-block:: python
+   
     # my_project/admin.py
     from django.contrib import admin
 
@@ -122,16 +123,14 @@ Configuration
     custom_admin = CustomAdminSite(name='CustomAdmin')
 
     # my_project/urls.py
-    ...
     from my_project.admin import custom_admin
 
     urlpatterns = [
-        ...
+        # ...
         path('/admin', custom_admin.urls), 
-        ...
+        # ...
     ]
 
 
     # my_project/settings.py
-    ...
     ADMIN_REORDER_SITE = 'my_project.admin.custom_admin'
