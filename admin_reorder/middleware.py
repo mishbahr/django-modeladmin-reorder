@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
-
+import importlib
 from copy import deepcopy
 
 from django.conf import settings
@@ -23,6 +23,23 @@ except ImportError:
     MiddlewareMixin = object
 
 
+def get_admin_index(request):
+    """Return the admin index from ADMIN_REORDER_SITE setting. If setting is
+    not found, return the index of django.contrib.admin.site.
+    """
+    admin_site = getattr(settings, 'ADMIN_REORDER_SITE', None)
+
+    if admin_site is not None:
+        *admin_module, admin_site = admin_site.split(".")
+
+        admin_module = importlib.import_module('.'.join(admin_module))
+        admin_site = getattr(admin_module, admin_site)
+
+        return admin_site.index(request)
+
+    return admin.site.index(request)
+
+
 class ModelAdminReorder(MiddlewareMixin):
 
     def init_config(self, request, app_list):
@@ -39,7 +56,7 @@ class ModelAdminReorder(MiddlewareMixin):
                 'ADMIN_REORDER config parameter must be tuple or list. '
                 'Got {config}'.format(config=self.config))
 
-        admin_index = admin.site.index(request)
+        admin_index = get_admin_index(request)
         try:
             # try to get all installed models
             app_list = admin_index.context_data['app_list']
