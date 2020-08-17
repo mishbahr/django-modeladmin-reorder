@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 from copy import deepcopy
 
 from django.conf import settings
 from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.six import string_types
 
 try:
     from django.urls import resolve, Resolver404
@@ -64,11 +59,11 @@ class ModelAdminReorder(MiddlewareMixin):
         return ordered_app_list
 
     def make_app(self, app_config):
-        if not isinstance(app_config, (dict, string_types)):
+        if not isinstance(app_config, (dict, str)):
             raise TypeError('ADMIN_REORDER list item must be '
                             'dict or string. Got %s' % repr(app_config))
 
-        if isinstance(app_config, string_types):
+        if isinstance(app_config, str):
             # Keep original label and models
             return self.find_app(app_config)
         else:
