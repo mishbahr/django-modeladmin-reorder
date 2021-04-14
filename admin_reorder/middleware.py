@@ -7,7 +7,7 @@ from copy import deepcopy
 from django.conf import settings
 from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.six import string_types
+from six import string_types
 
 try:
     from django.urls import resolve, Resolver404
@@ -151,13 +151,19 @@ class ModelAdminReorder(MiddlewareMixin):
             # or app_list view, bail out!
             return response
 
+
         try:
+            # snoop.pp(response.context_data)
             app_list = response.context_data['app_list']
         except KeyError:
-            # there is no app_list! nothing to reorder
-            return response
+            try:
+                app_list = response.context_data['available_apps']
+            except KeyError:
+                # there is no app_list! nor available_apps, nothing to reorder
+                return response
 
         self.init_config(request, app_list)
         ordered_app_list = self.get_app_list()
         response.context_data['app_list'] = ordered_app_list
+        response.context_data['available_apps'] = ordered_app_list
         return response
