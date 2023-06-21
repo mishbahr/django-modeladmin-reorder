@@ -20,7 +20,7 @@ except ImportError:
 
 class ModelAdminReorder(MiddlewareMixin):
 
-    def init_config(self, request, app_list):
+    def init_config(self, request, app_list, admin_site):
         self.request = request
         self.app_list = app_list
 
@@ -34,7 +34,7 @@ class ModelAdminReorder(MiddlewareMixin):
                 'ADMIN_REORDER config parameter must be tuple or list. '
                 'Got {config}'.format(config=self.config))
 
-        admin_index = admin.site.index(request)
+        admin_index = admin_site.index(request)
         try:
             # try to get all installed models
             app_list = admin_index.context_data['app_list']
@@ -155,8 +155,14 @@ class ModelAdminReorder(MiddlewareMixin):
             context_key = 'available_apps'
         else:  # nothing to reorder, return response
             return response
+        
+        # Allow for multiple sites, not multiple reorders currently
+        admin_site = admin.site
+        for site in admin.sites.all_sites:
+            if url.namespace == site.name:
+                admin_site = site
 
-        self.init_config(request, app_list)
+        self.init_config(request, app_list, admin_site)
         ordered_app_list = self.get_app_list()
         response.context_data[context_key] = ordered_app_list
         return response
