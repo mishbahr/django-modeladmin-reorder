@@ -29,6 +29,15 @@ class ModelAdminReorder(MiddlewareMixin):
             # ADMIN_REORDER settings is not defined.
             raise ImproperlyConfigured('ADMIN_REORDER config is not defined.')
 
+        # Add support for different reorder configs for different admin sites
+        if isinstance(self.config, dict):
+            if admin_site.name not in self.config.keys():
+                raise ImproperlyConfigured(
+                    'ADMIN_REORDER config parameter was set as a dict, its keys must be site names.'
+                    'Got {dict_keys}'.format(dict_keys=self.config.keys())
+                )
+            self.config = self.config.get(admin_site.name)
+
         if not isinstance(self.config, (tuple, list)):
             raise ImproperlyConfigured(
                 'ADMIN_REORDER config parameter must be tuple or list. '
@@ -156,7 +165,7 @@ class ModelAdminReorder(MiddlewareMixin):
         else:  # nothing to reorder, return response
             return response
         
-        # Allow for multiple sites, not multiple reorders currently
+        # Allow for multiple sites
         admin_site = admin.site
         for site in admin.sites.all_sites:
             if url.namespace == site.name:
