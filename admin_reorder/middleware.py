@@ -165,7 +165,7 @@ class ModelAdminReorder(MiddlewareMixin):
         else:  # nothing to reorder, return response
             return response
         
-        # Allow for multiple sites
+        # Allow for multiple sites, if using only one custom admin site - must name it differently than admin site
         admin_site = admin.site
         for site in admin.sites.all_sites:
             if url.namespace == site.name:
