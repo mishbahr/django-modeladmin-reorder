@@ -39,6 +39,8 @@ Features
 
 * Rename individual models in the app list. e.g. rename ``auth.User`` from ``User`` to ``Staff``
 
+* Adds all of the above to Django 3.1 Admin Sidebar
+
 
 Documentation
 -------------

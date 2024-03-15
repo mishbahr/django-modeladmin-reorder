@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 from copy import deepcopy
 
 from django.conf import settings
 from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.six import string_types
 
 try:
     from django.urls import resolve, Resolver404
@@ -25,7 +20,7 @@ except ImportError:
 
 class ModelAdminReorder(MiddlewareMixin):
 
-    def init_config(self, request, app_list):
+    def init_config(self, request, app_list, admin_site):
         self.request = request
         self.app_list = app_list
 
@@ -34,12 +29,21 @@ class ModelAdminReorder(MiddlewareMixin):
             # ADMIN_REORDER settings is not defined.
             raise ImproperlyConfigured('ADMIN_REORDER config is not defined.')
 
+        # Add support for different reorder configs for different admin sites
+        if isinstance(self.config, dict):
+            if admin_site.name not in self.config.keys():
+                raise ImproperlyConfigured(
+                    'ADMIN_REORDER config parameter was set as a dict, its keys must be site names.'
+                    'Got {dict_keys}'.format(dict_keys=self.config.keys())
+                )
+            self.config = self.config.get(admin_site.name)
+
         if not isinstance(self.config, (tuple, list)):
             raise ImproperlyConfigured(
                 'ADMIN_REORDER config parameter must be tuple or list. '
                 'Got {config}'.format(config=self.config))
 
-        admin_index = admin.site.index(request)
+        admin_index = admin_site.index(request)
         try:
             # try to get all installed models
             app_list = admin_index.context_data['app_list']
@@ -64,11 +68,11 @@ class ModelAdminReorder(MiddlewareMixin):
         return ordered_app_list
 
     def make_app(self, app_config):
-        if not isinstance(app_config, (dict, string_types)):
+        if not isinstance(app_config, (dict, str)):
             raise TypeError('ADMIN_REORDER list item must be '
                             'dict or string. Got %s' % repr(app_config))
 
-        if isinstance(app_config, string_types):
+        if isinstance(app_config, str):
             # Keep original label and models
             return self.find_app(app_config)
         else:
@@ -151,13 +155,23 @@ class ModelAdminReorder(MiddlewareMixin):
             # or app_list view, bail out!
             return response
 
-        try:
+        if 'app_list' in response.context_data:
             app_list = response.context_data['app_list']
-        except KeyError:
-            # there is no app_list! nothing to reorder
+            context_key = 'app_list'
+        # handle django 3.1 sidebar
+        elif 'available_apps' in response.context_data:
+            app_list = response.context_data['available_apps']
+            context_key = 'available_apps'
+        else:  # nothing to reorder, return response
             return response
+        
+        # Allow for multiple sites, if using only one custom admin site - must name it differently than admin site
+        admin_site = admin.site
+        for site in admin.sites.all_sites:
+            if url.namespace == site.name:
+                admin_site = site
 
-        self.init_config(request, app_list)
+        self.init_config(request, app_list, admin_site)
         ordered_app_list = self.get_app_list()
-        response.context_data['app_list'] = ordered_app_list
+        response.context_data[context_key] = ordered_app_list
         return response
